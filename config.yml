@@ -1,0 +1,25 @@
+language: en
+
+pipeline:
+- name: WhitespaceTokenizer
+- name: CountVectorsFeaturizer
+- name: DIETClassifier
+  epochs: 10
+
+- name: EntitySynonymMapper
+- name: ResponseSelector
+  epochs: 10
+
+policies:
+- name: RulePolicy
+
+tracker_store:
+  type: sql
+  dialect: postgresql
+  url: db
+  db: rasa_db
+  username: rasa
+  password: rasa
+  port: 5432
+
+assistant_id: 20251001-175323-atomic-spec

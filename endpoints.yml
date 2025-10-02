@@ -1,0 +1,13 @@
+# endpoints.yml
+
+action_endpoint:
+  url: "http://action-server:5055/webhook"
+
+tracker_store:
+  type: sql
+  dialect: "postgresql"
+  url: "db"
+  db: "rasa_db"
+  username: "rasa"
+  password: "rasa"
+  port: 5432

@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  rasa:
+    image: rasa/rasa:latest
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./config.yml:/app/config.yml
+      - ./domain.yml:/app/domain.yml
+      - ./endpoints.yml:/app/endpoints.yml
+
+    ports:
+      - "5005:5005"
+    depends_on:
+      - db
+    environment:
+      # configure Rasa to connect to Postgres for tracker store
+      POSTGRES_HOST: db
+      POSTGRES_DB: rasa_db
+      POSTGRES_USER: rasa
+      POSTGRES_PASSWORD: rasa
+    command: >
+      run
+      --enable-api
+
+  action-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.actions
+    volumes:
+      - ./actions:/app/actions
+      - ./endpoints.yml:/app/endpoints.yml
+      - ~/.cache/pip:/root/.cache/pip   # mount host pip cache
+      - ./models:/models
+
+    ports:
+      - "5055:5055"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: rasa
+      POSTGRES_PASSWORD: rasa
+      POSTGRES_DB: rasa_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

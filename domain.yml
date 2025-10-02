@@ -1,0 +1,17 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - ask_help
+  - out_of_scope
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you?"
+  utter_goodbye:
+    - text: "Goodbye! Have a nice day."
+  utter_ask_help:
+    - text: "I can answer questions about X, Y, Z. What do you want to know?"
+  utter_default:
+    - text: "Sorry, I don't understand that. Can you rephrase?"
